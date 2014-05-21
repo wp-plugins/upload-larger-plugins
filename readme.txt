@@ -11,7 +11,7 @@ Install plugins of any size (i.e. work around web hosting limits)
 
 == Description ==
 
-This plugin replaces the built-in WordPress plugin uploader with one that allow you to upload a plugin of any size.
+This plugin replaces the built-in WordPress plugin uploader with one that allows you to upload a plugin of any size.
 
 This is something you might need if your web hosting has a low maximum file upload limit (some default PHP installs have 2Mb), and the plugin you wish to install is too large for this.
 
