@@ -15,7 +15,7 @@ This plugin replaces the built-in WordPress plugin uploader with one that allows
 
 This is something you might need if your web hosting has a low maximum file upload limit (some default PHP installs have 2Mb), and the plugin you wish to install is too large for this.
 
-It accomplishes this task by replacing WordPress's default plugin uploader with a more sophisticated component that can upload larger files in chunks.
+It accomplishes this task by replacing WordPress's default plugin uploader with a more sophisticated component that can upload larger files in chunks. You just install this plugin, activate it, and that's it - you can now get back to the real work.
 
 Want to see some more quality plugins and products?
 
