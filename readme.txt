@@ -24,6 +24,10 @@ Want to see some more quality plugins and products?
 * <a href="http://profiles.wordpress.org/davidanderson#content-plugins">Other free plugins on my WordPress profile page</a>
 * <a href="http://wordshell.net">WordShell - WordPress from the command line</a>
 
+== Screenshots ==
+
+1. New plugin uploading widget - accepting plugin zips of any size
+
 == Installation ==
 
 Standard WordPress plugin installation:
