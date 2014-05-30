@@ -3,7 +3,7 @@ Contributors: DavidAnderson
 Tags: upload larger plugins, upload file limit, plupload, plugins installation
 Requires at least: 3.3
 Tested up to: 3.9.1
-Stable tag: 1.0
+Stable tag: 1.1
 Donate link: http://david.dw-perspective.org.uk/donate
 License: MIT
 
@@ -46,6 +46,9 @@ There are none. If the plugin is active, then it will replace the upload widget 
 No. It would not be a huge job to extend it to do so; but I have no reasons for doing that presently.
 
 == Changelog ==
+
+= 1.1 30-May-2014 =
+- Only load this plugin's JavaScript on the relevant page
 
 = 1.0 21-May-2014 =
 - First version

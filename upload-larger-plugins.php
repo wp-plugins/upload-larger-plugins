@@ -52,6 +52,9 @@ class Simba_Upload_Larger_Plugins {
 
 	public function admin_enqueue_scripts() {
 
+		global $pagenow;
+		if ($pagenow != 'plugin-install.php' || !isset($_REQUEST['tab']) || 'upload' != $_REQUEST['tab']) return;
+
 		wp_enqueue_script('ulp-admin-ui', UPLOADLARGERPLUGINS_URL.'/admin.js', array('jquery', 'plupload-all'), '1');
 
 		wp_localize_script('ulp-admin-ui', 'ulplion', array(
