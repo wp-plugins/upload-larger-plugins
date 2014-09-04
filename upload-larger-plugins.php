@@ -2,7 +2,7 @@
 
 /*
 Plugin Name: Upload Larger Plugins
-Version: 1.0
+Version: 1.1
 Plugin URI: http://wordpress.org/plugins/upload-larger-plugins
 Description: Allow plugins larger than the PHP-defined limit to be uploaded.
 Author: David Anderson
@@ -16,7 +16,7 @@ if (!defined('ABSPATH')) die('No direct access');
 // Globals
 define('UPLOADLARGERPLUGINS_SLUG', "upload-larger-plugins");
 define('UPLOADLARGERPLUGINS_DIR', WP_PLUGIN_DIR . '/' . UPLOADLARGERPLUGINS_SLUG);
-define('UPLOADLARGERPLUGINS_VERSION', '1.0');
+define('UPLOADLARGERPLUGINS_VERSION', '1.1');
 define('UPLOADLARGERPLUGINS_URL', plugins_url('', __FILE__));
 
 $simba_upload_larger_plugins = new Simba_Upload_Larger_Plugins();
