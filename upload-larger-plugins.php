@@ -2,7 +2,7 @@
 
 /*
 Plugin Name: Upload Larger Plugins
-Version: 1.1
+Version: 1.2
 Plugin URI: http://wordpress.org/plugins/upload-larger-plugins
 Description: Allow plugins larger than the PHP-defined limit to be uploaded.
 Author: David Anderson
@@ -14,9 +14,9 @@ License: MIT
 if (!defined('ABSPATH')) die('No direct access');
 
 // Globals
+define('UPLOADLARGERPLUGINS_VERSION', '1.2');
 define('UPLOADLARGERPLUGINS_SLUG', "upload-larger-plugins");
-define('UPLOADLARGERPLUGINS_DIR', WP_PLUGIN_DIR . '/' . UPLOADLARGERPLUGINS_SLUG);
-define('UPLOADLARGERPLUGINS_VERSION', '1.1');
+define('UPLOADLARGERPLUGINS_DIR', dirname(realpath(__FILE__)));
 define('UPLOADLARGERPLUGINS_URL', plugins_url('', __FILE__));
 
 $simba_upload_larger_plugins = new Simba_Upload_Larger_Plugins();
@@ -31,9 +31,45 @@ class Simba_Upload_Larger_Plugins {
 		add_action('install_plugins_pre_upload', array($this, 'install_plugins_pre_upload'));
 		add_action('admin_enqueue_scripts', array($this, 'admin_enqueue_scripts'));
 		add_action('plugins_loaded', array($this, 'load_translations'));
-		add_action('admin_head', array($this,'admin_head'));
+		add_action('admin_head', array($this, 'admin_head'));
 		add_action('wp_ajax_ulp_plupload_action', array($this, 'ulp_plupload_action'));
+		add_action('admin_init', array($this, 'admin_init'));
+		// This filter only exists on WP 3.7+
 		add_filter('upgrader_pre_download', array($this, 'upgrader_pre_download'), 10, 3);
+	}
+
+	public function admin_init() {
+
+		if (empty($_GET['plugincksha1']) || empty($_GET['overridebd']) || empty($_GET['package'])) return;
+		if (!current_user_can('install_plugins')) return;
+
+		global $wp_version;
+		require(ABSPATH.WPINC.'/version.php');
+		// The rest of the code's purpose is to work-around the lack of the upgrader_pre_download filter before WP 3.7
+		// The below would work on >= 3.7 too; but there, we use a more elegant/direct method.
+
+		if (version_compare($wp_version, '3.7', '>=')) return;
+
+		$upgrader = new stdClass;
+		$upgrader->strings = array('download_failed' => __('Error when trying to find uploaded file', 'uploadlargerplugins'));
+		$try_file = $this->upgrader_pre_download(false, $_GET['package'], $upgrader);
+
+		// The File_Upload_Upgrader object eventually gets constructed with this (where $urlholder = 'package', and $uploads = wp_upload_dir())
+		//File_Upload_Upgrader::filename = $_GET[$urlholder];
+		//File_Upload_Upgrader::package = $uploads['basedir'] . '/' . $this->filename;
+		if ( ! ( ( $uploads = wp_upload_dir() ) && false === $uploads['error'] ) ) return;
+		if (is_string($try_file) && file_exists($try_file)) {
+			$upload_dir = untrailingslashit(get_temp_dir());
+// 			if (!is_writable($upload_dir)) return;
+			$this->upload_basedir = $upload_dir;
+			add_filter('upload_dir', array($this, 'upload_dir'));
+			add_action('upgrader_process_complete', array($this, 'upgrader_process_complete'));
+		}
+	}
+
+	// Only hooked on WP < 3.7
+	public function upgrader_process_complete() {
+		remove_filter('upload_dir', array($this, 'upload_dir'));
 	}
 
 	public function upgrader_pre_download($result, $package, $upgrader) {
@@ -51,6 +87,8 @@ class Simba_Upload_Larger_Plugins {
 	}
 
 	public function admin_enqueue_scripts() {
+
+		if (!current_user_can('install_plugins')) return;
 
 		global $pagenow;
 		if ($pagenow != 'plugin-install.php' || !isset($_REQUEST['tab']) || 'upload' != $_REQUEST['tab']) return;
@@ -76,6 +114,7 @@ class Simba_Upload_Larger_Plugins {
 
 	public function upload_dir($uploads) {
 		if (!empty($this->upload_dir)) $uploads['path'] = $this->upload_dir;
+		if (!empty($this->upload_basedir)) $uploads['basedir'] = $this->upload_basedir;
 		return $uploads;
 	}
 
@@ -84,6 +123,7 @@ class Simba_Upload_Larger_Plugins {
 
 		@set_time_limit(900);
 
+		if (!current_user_can('install_plugins')) return;
 		check_ajax_referer('uploadlargerplugins-uploader');
 
 		$upload_dir = untrailingslashit(get_temp_dir());
@@ -154,6 +194,7 @@ class Simba_Upload_Larger_Plugins {
 				exit;
 			}
 		}
+
 		// send the redirect URL
 		$response['m'] = admin_url('update.php?action=upload-plugin&overridebd='.urlencode(dirname($status['file'])).'&plugincksha1='.sha1_file($status['file']).'&_wpnonce='.wp_create_nonce( 'plugin-upload' ).'&package='.urlencode(basename($status['file'])));
 		echo json_encode($response);
@@ -162,8 +203,9 @@ class Simba_Upload_Larger_Plugins {
 
 	public function admin_head() {
 
-		global $pagenow;
+		if (!current_user_can('install_plugins')) return;
 
+		global $pagenow;
 		if ($pagenow != 'plugin-install.php' || !isset($_REQUEST['tab']) || 'upload' != $_REQUEST['tab']) return;
 
  		$chunk_size = min(wp_max_upload_size()-1024, 1024*1024*2);
@@ -283,7 +325,7 @@ class Simba_Upload_Larger_Plugins {
 	public function action_links($links, $file) {
 		if ($file == UPLOADLARGERPLUGINS_SLUG."/".basename(__FILE__)) {
 			array_unshift( $links, 
-				'<a href="options-general.php?page=upload_larger_plugins">Settings</a>'
+				'<a href="options-general.php?page=upload_larger_plugins">'.__('Settings', 'uploadlargerplugins').'</a>'
 			);
 		}
 		return $links;

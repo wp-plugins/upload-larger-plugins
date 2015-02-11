@@ -3,7 +3,7 @@ Contributors: DavidAnderson
 Tags: upload larger plugins, upload file limit, plupload, plugins installation
 Requires at least: 3.3
 Tested up to: 4.1
-Stable tag: 1.1
+Stable tag: 1.2
 Donate link: http://david.dw-perspective.org.uk/donate
 License: MIT
 
@@ -19,10 +19,10 @@ It accomplishes this task by replacing WordPress's default plugin uploader with 
 
 Want to see some more quality plugins and products?
 
-* <a title="WordPress backup, clone and restoration" href="http://updraftplus.com">UpdraftPlus - best WordPress backup, clone and restore plugin</a>
-* <a title="WooCommerce extensions for WordPress" href="http://simbahosting.co.uk/s3/shop/">Some other premium WordPress plugins (mostly WooCommerce extensions)</a>
-* <a href="http://profiles.wordpress.org/davidanderson#content-plugins">Other free plugins on my WordPress profile page</a>
-* <a href="http://wordshell.net">WordShell - WordPress from the command line</a>
+* <a title="WordPress backup, clone and restoration" href="https://updraftplus.com/">UpdraftPlus - best WordPress backup, clone and restore plugin</a>
+* <a title="WooCommerce extensions for WordPress" href="https://simbahosting.co.uk/s3/shop/">Some other premium WordPress plugins (mostly WooCommerce extensions)</a>
+* <a href="https://profiles.wordpress.org/davidanderson#content-plugins">Other free plugins on my WordPress profile page</a>
+* <a href="http://wordshell.net/">WordShell - WordPress from the command line</a>
 
 == Screenshots ==
 
@@ -47,10 +47,14 @@ No. It would not be a huge job to extend it to do so; but I have no reasons for 
 
 == Changelog ==
 
-= 1.1 30-May-2014 =
+= 1.2 - 11-Feb-2015 =
+- Fixed: Now works on WP 3.6 (and probably earlier)
+- Tweak: Add some extra permissions checks (believed to be redundant - no security issue known)
+
+= 1.1 - 30-May-2014 =
 - Only load this plugin's JavaScript on the relevant page
 
-= 1.0 21-May-2014 =
+= 1.0 - 21-May-2014 =
 - First version
 
 == License ==
@@ -79,4 +83,4 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 == Upgrade Notice ==
-First version
+Now working on WP 3.6 (and probably earlier)
