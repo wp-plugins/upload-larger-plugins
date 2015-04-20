@@ -208,7 +208,7 @@ class Simba_Upload_Larger_Plugins {
 		global $pagenow;
 		if ($pagenow != 'plugin-install.php' || !isset($_REQUEST['tab']) || 'upload' != $_REQUEST['tab']) return;
 
- 		$chunk_size = min(wp_max_upload_size()-1024, 1024*1024*2);
+ 		$chunk_size = min(wp_max_upload_size()-1024, 1024*1024*2-1024);
 
 		# The multiple_queues argument is ignored in plupload 2.x (WP3.9+) - http://make.wordpress.org/core/2014/04/11/plupload-2-x-in-wordpress-3-9/
 		# max_file_size is also in filters as of plupload 2.x, but in its default position is still supported for backwards-compatibility. Likewise, our use of filters.extensions below is supported by a backwards-compatibility option (the current way is filters.mime-types.extensions
